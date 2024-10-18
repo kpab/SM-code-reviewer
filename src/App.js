@@ -1,5 +1,4 @@
 import { useState } from "react";
-import openai from "./lib/openai";
 import Markdown from "react-markdown";
 
 const prompt = `
@@ -35,10 +34,18 @@ function App() {
     ];
 
     try {
-      const result = await openai.completion(messages);
-      setResult(result);
+      // フロントエンドからバックエンドのサーバーレス関数にリクエストを送る
+      const response = await fetch("/api/openai", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ messages }),
+      });
+      const data = await response.json();
+      setResult(data.message);
     } catch (error) {
-      console.error("OpenAI APIエラー:", error);
+      console.error("APIエラー:", error);
       setResult("エラーが発生しました。もう一度お試しください。");
     } finally {
       setLoading(false);
