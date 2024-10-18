@@ -28,6 +28,9 @@ export default async function handler(req, res) {
       "APIリクエストエラー:",
       error.response?.data || error.message
     );
+    console.log("Error Response Data:", error.response?.data);
+    console.log("Error Response Status:", error.response?.status);
+    console.log("Error Response Headers:", error.response?.headers);
 
     // クライアントにJSON形式でエラーメッセージを返す
     res
