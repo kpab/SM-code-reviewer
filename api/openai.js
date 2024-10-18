@@ -1,12 +1,13 @@
-// api/openai.js
 import axios from "axios";
 
 export default async function handler(req, res) {
+  const apiKey = process.env.OPENAI_API_KEY;
+
   const { messages } = req.body;
 
   try {
     const requestData = {
-      model: "gpt-4o",
+      model: "gpt-4", // モデル名を修正
       messages,
     };
 
@@ -15,8 +16,8 @@ export default async function handler(req, res) {
       requestData,
       {
         headers: {
+          Authorization: `Bearer ${apiKey}`,
           "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`, // APIキーはここで管理
         },
       }
     );
