@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     const openai = new OpenAIApi(configuration);
 
     const response = await openai.createChatCompletion({
-      model: "gpt-4",
+      model: "gpt-4o", // GPT-4へのアクセスがない場合はこちらを使用
       messages,
     });
 
