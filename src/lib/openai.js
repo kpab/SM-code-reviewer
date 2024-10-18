@@ -6,7 +6,7 @@ export default async function handler(req, res) {
 
   try {
     const requestData = {
-      model: "gpt-4",
+      model: "gpt-4o",
       messages,
     };
 
@@ -23,7 +23,14 @@ export default async function handler(req, res) {
 
     res.status(200).json({ message: response.data.choices[0].message.content });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "API request failed" });
+    console.error(
+      "APIリクエストエラー:",
+      error.response?.data || error.message
+    );
+
+    // クライアントにJSON形式でエラーメッセージを返す
+    res
+      .status(500)
+      .json({ error: "APIリクエストに失敗しました。もう一度お試しください。" });
   }
 }

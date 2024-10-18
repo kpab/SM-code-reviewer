@@ -34,7 +34,6 @@ function App() {
     ];
 
     try {
-      // フロントエンドからバックエンドのサーバーレス関数にリクエストを送る
       const response = await fetch("/api/openai", {
         method: "POST",
         headers: {
@@ -42,11 +41,20 @@ function App() {
         },
         body: JSON.stringify({ messages }),
       });
+
+      // レスポンスのステータスコードをチェック
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "APIエラーが発生しました。");
+      }
+
       const data = await response.json();
       setResult(data.message);
     } catch (error) {
-      console.error("APIエラー:", error);
-      setResult("エラーが発生しました。もう一度お試しください。");
+      console.error("APIエラー:", error.message);
+      setResult(
+        error.message || "エラーが発生しました。もう一度お試しください。"
+      );
     } finally {
       setLoading(false);
     }
